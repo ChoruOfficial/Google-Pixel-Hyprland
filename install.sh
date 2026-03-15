@@ -23,16 +23,15 @@ echo "  █████╗   ╚███╔╝ ██║   ██║██║  
 echo "  ██╔══╝   ██╔██╗ ██║   ██║██║     ██║   ██║██╔══██╗██╔══╝  "
 echo "  ███████╗██╔╝ ██╗╚██████╔╝╚██████╗╚██████╔╝██║  ██║███████╗"
 echo "  ╚══════╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝"
-echo -e "             ${BLUE}MASTER AUTO-DEPLOYMENT v1.5${NC}"
+echo -e "              ${BLUE}MASTER AUTO-DEPLOYMENT v2.0${NC}"
 echo -e "${BLUE}==========================================================${NC}"
 
 # 1. Setup Temp Directory & Clone Repo
-echo -e "\n${YELLOW}󰇚 [1/4] Cloning Google-Pixel-Hyprland Repo...${NC}"
+echo -e "\n${YELLOW}󰇚 [1/5] Cloning Google-Pixel-Hyprland Repo...${NC}"
 REPO_URL="https://github.com/ChoruOfficial/Google-Pixel-Hyprland"
 TEMP_DIR="/tmp/google-pixel-hyprland"
 
-# Remove old temp if exists
-rm -rf $TEMP_DIR
+rm -rf $TEMP_DIR # Clean old files
 
 if git clone $REPO_URL $TEMP_DIR; then
     echo -e "${GREEN}✔ Repository cloned successfully.${NC}"
@@ -41,12 +40,11 @@ else
     exit 1
 fi
 
-# 2. Backup & Replace Configs
-echo -e "\n${YELLOW}󰆐 [2/4] Deploying configurations to ~/.config/...${NC}"
-# Siguraduhing nasa ~/.config ang user
+# 2. Deploy Configs
+echo -e "\n${YELLOW}󰆐 [2/5] Deploying configurations to ~/.config/...${NC}"
 mkdir -p ~/.config
 
-# Copy all folders (fish, hypr, kitty, waybar) and replace existing
+# Copy folders and replace existing
 cp -rf $TEMP_DIR/fish ~/.config/
 cp -rf $TEMP_DIR/hypr ~/.config/
 cp -rf $TEMP_DIR/kitty ~/.config/
@@ -55,12 +53,22 @@ cp -rf $TEMP_DIR/waybar ~/.config/
 echo -e "${GREEN}✔ Configs replaced and updated.${NC}"
 
 # 3. Set Permissions
-echo -e "\n${YELLOW}󰧿 [3/4] Setting execution permissions...${NC}"
+echo -e "\n${YELLOW}󰧿 [3/5] Setting execution permissions...${NC}"
 chmod +x ~/.config/waybar/scripts/*.js
 chmod +x ~/.config/waybar/install.sh 2>/dev/null
+chmod +x ~/.config/fish/install.sh 2>/dev/null
 
-# 4. Final Handover to Waybar Installer
-echo -e "\n${YELLOW}󱐋 [4/4] Starting Waybar Exocore Installer...${NC}"
+# 4. Run Fish Engine Installer
+echo -e "\n${YELLOW}󰈺 [4/5] Initializing Fish Shell Engine...${NC}"
+if [ -f "$HOME/.config/fish/install.sh" ]; then
+    bash $HOME/.config/fish/install.sh
+    echo -e "${GREEN}✔ Fish engine setup complete.${NC}"
+else
+    echo -e "${RED}✘ Fish installer not found!${NC}"
+fi
+
+# 5. Final Handover to Waybar Installer
+echo -e "\n${YELLOW}󱐋 [5/5] Starting Waybar Exocore Installer...${NC}"
 echo -e "${BLUE}----------------------------------------------------------${NC}"
 
 if [ -f "$HOME/.config/waybar/install.sh" ]; then
