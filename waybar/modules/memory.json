@@ -1,0 +1,6 @@
+{
+    "custom/mem": {
+        "exec": "node ~/.config/waybar/scripts/status.js mem",
+        "interval": 1
+    }
+}

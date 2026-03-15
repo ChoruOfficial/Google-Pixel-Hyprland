@@ -1,16 +1,17 @@
 #!/usr/bin/env node
-
 /**
- * PROJECT:  EXOCORE STATUS ENGINE
- * AUTHOR:   Choru Official
+ * ---------------------------------------------------------
+ * PROJECT:  EXOCORE SYSTEM ENGINE
+ * AUTHOR:   Choru Official (Johnsteve Costanos)
+ * VERSION:  1.3.0
+ * ---------------------------------------------------------
  */
-
 const { execSync } = require("child_process");
 const mode = process.argv[2];
 
 const glyphs = {
     wifi: { on: "󰤨", off: "󰤭" },
-    bt: { on: "󰂱", off: "󰂯", disc: "󰂯" },
+    bt: { on: "󰂱", off: "󰂯" },
     bat: { char: "󱐋", full: "󰁹", med: "󰁾", low: "󰁺" }
 };
 
@@ -22,13 +23,11 @@ try {
             const ssid = execSync("nmcli -t -f active,ssid dev wifi | grep '^yes' | cut -d: -f2").toString().trim();
             process.stdout.write(ssid ? `<span color="${colors.blue}">${glyphs.wifi.on}</span> ${ssid}` : `<span color="${colors.red}">${glyphs.wifi.off}</span>`);
             break;
-
         case "bt":
             const isOn = execSync("bluetoothctl show").toString().includes("Powered: yes");
             const isConn = execSync("bluetoothctl info").toString().includes("Device");
             process.stdout.write(`<span color="${isConn ? colors.blue : (isOn ? "#ffffff" : colors.red)}">${isConn ? glyphs.bt.on : glyphs.bt.off}</span>`);
             break;
-
         case "bat":
             const cap = parseInt(execSync("cat /sys/class/power_supply/BAT*/capacity | head -1").toString());
             const status = execSync("cat /sys/class/power_supply/BAT*/status | head -1").toString().trim();
@@ -36,15 +35,12 @@ try {
             const color = cap < 20 ? colors.red : (cap < 50 ? colors.yellow : colors.green);
             process.stdout.write(`<span color="${color}">${icon} ${cap}%</span>`);
             break;
-
         case "mem":
             const mem = execSync("free -m | awk '/Mem:/ {print $3}'").toString().trim();
             process.stdout.write(`  ${(mem/1024).toFixed(1)}G`);
             break;
-
         case "clock":
-            const time = new Date().toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' });
-            process.stdout.write(time);
+            process.stdout.write(new Date().toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' }));
             break;
     }
 } catch (e) {

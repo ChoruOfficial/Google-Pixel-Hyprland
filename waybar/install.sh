@@ -1,34 +1,26 @@
 #!/bin/bash
 
-###########################################################
-# PROJECT:  EXOCORE SYSTEM INSTALLER (PREMIUM)
-# AUTHOR:   Choru Official (Johnsteve Costanos)
-# VERSION:  1.3.1 (Global Sync Integrated)
-###########################################################
+# * ---------------------------------------------------------
+# * PROJECT:  EXOCORE SYSTEM DEPLOYMENT (MODULAR)
+# * AUTHOR:   Choru Official (Johnsteve Costanos)
+# * VERSION:  1.3.1
+# * ---------------------------------------------------------
+
 
 # Color variables
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-YELLOW='\033[1;33m'
-RED='\033[0;31m'
+G1='\033[38;5;39m'  # Light Blue
+G2='\033[38;5;45m'  # Cyan-ish
+G3='\033[38;5;51m'  # Bright Cyan
+G4='\033[38;5;81m'  # Sky Blue
+G5='\033[38;5;111m' # Soft Blue
 PURPLE='\033[0;35m'
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m'
 
-# ASCII Art & Banner
-clear
-echo -e "${CYAN}"
-echo "  ███████╗██╗  ██╗ ██████╗  ██████╗ ██████╗ ██████╗ ███████╗"
-echo "  ██╔════╝╚██╗██╔╝██╔═══██╗██╔════╝██╔═══██╗██╔══██╗██╔════╝"
-echo "  █████╗    ╚███╔╝ ██║   ██║██║      ██║   ██║██████╔╝█████╗  "
-echo "  ██╔══╝    ██╔██╗ ██║   ██║██║      ██║   ██║██╔══██╗██╔══╝  "
-echo "  ███████╗██╔╝ ██╗╚██████╔╝╚██████╗╚██████╔╝██║  ██║███████╗"
-echo "  ╚══════╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝"
-echo -e "           ${PURPLE}PREMIUM SYSTEM DEPLOYMENT v1.3.1${NC}"
-echo -e "${BLUE}==========================================================${NC}"
-echo -e "${NC}  AUTHOR: ${GREEN}Johnsteve Costanos (Choru Official)${NC}"
-echo -e "${BLUE}==========================================================${NC}"
-
+# Spinner function for aesthetic loading
 spinner() {
     local pid=$!
     local delay=0.1
@@ -43,63 +35,65 @@ spinner() {
     printf "    \b\b\b\b"
 }
 
-# 1. Arch Check
-if ! [ -f /etc/arch-release ]; then
-    echo -e "${RED}[ERROR] This environment is not Arch Linux. Aborting.${NC}"
-    exit 1
-fi
+clear
+# Gradient Banner
+echo -e "${G1}  ███████╗██╗  ██╗ ██████╗  ██████╗ ██████╗ ██████╗ ███████╗"
+echo -e "${G2}  ██╔════╝╚██╗██╔╝██╔═══██╗██╔════╝██╔═══██╗██╔══██╗██╔════╝"
+echo -e "${G3}  █████╗    ╚███╔╝ ██║   ██║██║      ██║   ██║██████╔╝█████╗  "
+echo -e "${G4}  ██╔══╝    ██╔██╗ ██║   ██║██║      ██║   ██║██╔══██╗██╔══╝  "
+echo -e "${G5}  ███████╗██╔╝ ██╗╚██████╔╝╚██████╗╚██████╔╝██║  ██║███████╗"
+echo -e "${G5}  ╚══════╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝"
+echo -e "           ${PURPLE}PREMIUM MODULAR DEPLOYMENT v1.3.1${NC}"
+echo -e "${BLUE}==========================================================${NC}"
+echo -e "${NC}  AUTHOR: ${GREEN}Johnsteve Costanos (Choru Official)${NC}"
+echo -e "${BLUE}==========================================================${NC}"
 
-# 2. Dependency Installation (Updated with Sync Tools)
-echo -e "\n${YELLOW}󰂖 [1/5] Initializing core dependencies & sync tools...${NC}"
-# Kasama na dito ang kvantum, nwg-look, at portals para sa Dolphin/Chrome sync
-CORE="waybar swww git nodejs npm rofi ttf-jetbrains-mono-nerd"
-SYNC_TOOLS="kvantum qt5ct qt6ct nwg-look xdg-desktop-portal-hyprland xdg-desktop-portal-gtk"
-(sudo pacman -S --noconfirm --needed $CORE $SYNC_TOOLS) & spinner
-echo -e "${GREEN}✔ Core and Sync dependencies installed.${NC}"
-
-# 3. Directory Preparation
-echo -e "\n${YELLOW}󰉖 [2/5] Structuring Exocore directories...${NC}"
-(mkdir -p ~/.config/waybar/scripts && mkdir -p ~/Pictures/Pixel-Google-Image) & spinner
+# 1. Directory Structure
+echo -e "\n${YELLOW}󰉖 [1/5] Initializing Exocore structure...${NC}"
+(mkdir -p ~/.config/waybar/{modules,themes,scripts,assets/backgrounds}) & spinner
 echo -e "${GREEN}✔ File system ready.${NC}"
 
-# 4. Wallpaper Syncing
-echo -e "\n${YELLOW}󰋩 [3/5] Synchronizing cloud assets (Wallpapers)...${NC}"
-REPO_URL="https://github.com/ChoruOfficial/Pixel-Google-Image.git"
-if [ ! -d "$HOME/Pictures/Pixel-Google-Image/.git" ]; then
-    (git clone $REPO_URL ~/Pictures/Pixel-Google-Image) & spinner
+# 2. Dependencies via YAY
+echo -e "\n${YELLOW}󰂖 [2/5] Installing core dependencies (yay)...${NC}"
+(yay -S --noconfirm --needed waybar swww git nodejs rofi bluez bluez-utils blueman) & spinner
+echo -e "${GREEN}✔ Dependencies installed.${NC}"
+
+# 3. Bluetooth Service
+echo -e "\n${YELLOW}󰂱 [3/5] Activating Bluetooth engine...${NC}"
+(sudo systemctl enable --now bluetooth) & spinner
+echo -e "${GREEN}✔ Bluetooth service online.${NC}"
+
+# 4. Asset Synchronization
+echo -e "\n${YELLOW}󰋩 [4/5] Synchronizing cloud assets (Wallpapers)...${NC}"
+REPO="https://github.com/ChoruOfficial/Pixel-Google-Image.git"
+if [ ! -d "$HOME/.config/waybar/assets/backgrounds/.git" ]; then
+    (git clone $REPO ~/.config/waybar/assets/backgrounds) & spinner
 else
-    (cd ~/Pictures/Pixel-Google-Image && git pull) & spinner
+    (cd ~/.config/waybar/assets/backgrounds && git pull) & spinner
 fi
-echo -e "${GREEN}✔ Assets synchronized.${NC}"
+echo -e "${GREEN}✔ Assets synchronized to local storage.${NC}"
 
-# 5. Config Deployment
-echo -e "\n${YELLOW}󱧿 [4/5] Injecting Exocore configuration modules...${NC}"
+# 5. Configuration Injection
+echo -e "\n${YELLOW}󱧿 [5/5] Injecting Exocore modules...${NC}"
 (
-    # Copy waybar configs
-    cp ./config.jsonc ~/.config/waybar/ 2>/dev/null
-    cp ./scripts/*.js ~/.config/waybar/scripts/ 2>/dev/null
+    cp ./config.jsonc ~/.config/waybar/
+    cp ./modules/*.json ~/.config/waybar/modules/
+    cp ./themes/*.css ~/.config/waybar/themes/
+    cp ./scripts/*.js ~/.config/waybar/scripts/
     chmod +x ~/.config/waybar/scripts/*.js
-
-    # Siguraduhin na executable ang theme-engine.js
-    if [ -f ~/.config/waybar/scripts/theme.js ]; then
-        chmod +x ~/.config/waybar/scripts/theme.js
-    fi
 ) & spinner
-echo -e "${GREEN}✔ Configurations deployed.${NC}"
+echo -e "${GREEN}✔ Configuration deployed successfully.${NC}"
 
-# 6. Final Initialization
-echo -e "\n${YELLOW}󱐋 [5/5] Powering up the Exocore engine...${NC}"
+# Initialization
 if ! pgrep -x "swww-daemon" > /dev/null; then
     swww-daemon &
-    sleep 2
 fi
 
-# Run initial theme sync
-(node ~/.config/waybar/scripts/theme.js) & spinner
+# Initial Theme Run
+node ~/.config/waybar/scripts/theme.js
 
-# Success Message
 echo -e "\n${BLUE}==========================================================${NC}"
 echo -e "${GREEN}   SYSTEM STATUS: ONLINE & OPTIMIZED${NC}"
-echo -e "${CYAN}   Global Sync (GTK/Qt/Electron) is now active.${NC}"
+echo -e "${G3}   All modules and assets are now modularized.${NC}"
 echo -e "${BLUE}==========================================================${NC}"
-echo -e "${PURPLE}   Stay Peak, Boss Choru! Reboot is recommended.${NC}\n"
+echo -e "${PURPLE}   Stay Peak, Boss Choru!${NC}\n"

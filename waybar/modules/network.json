@@ -1,0 +1,10 @@
+{
+    "custom/wifi": {
+        "exec": "node ~/.config/waybar/scripts/status.js wifi",
+        "interval": 1
+    },
+    "custom/bt": {
+        "exec": "node ~/.config/waybar/scripts/status.js bt",
+        "interval": 1
+    }
+}

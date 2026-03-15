@@ -1,0 +1,6 @@
+{
+    "custom/bat": {
+        "exec": "node ~/.config/waybar/scripts/status.js bat",
+        "interval": 1
+    }
+}

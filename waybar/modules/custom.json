@@ -1,0 +1,19 @@
+{
+    "custom/launcher": {
+        "format": " 󰣇 ",
+        "on-click": "wofi --show drun",
+        "tooltip-format": "Exocore System\nBy: Choru Official"
+    },
+    "custom/theme-toggle": {
+        "format": "󱎗",
+        "on-click": "node ~/.config/waybar/scripts/theme.js"
+    },
+    "custom/google-center": {
+        "format": "  ",
+        "on-click": "chromium --new-window https://www.google.com"
+    },
+    "custom/clock": {
+        "exec": "node ~/.config/waybar/scripts/status.js clock",
+        "interval": 1
+    }
+}

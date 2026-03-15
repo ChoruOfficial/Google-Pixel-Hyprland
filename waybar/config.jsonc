@@ -4,32 +4,14 @@
     "margin": "8 12 0 12",
     "height": 45,
     "spacing": 4,
-
+    "include": [
+        "~/.config/waybar/modules/custom.json",
+        "~/.config/waybar/modules/cpu.json",
+        "~/.config/waybar/modules/memory.json",
+        "~/.config/waybar/modules/battery.json",
+        "~/.config/waybar/modules/network.json"
+    ],
     "modules-left": ["custom/launcher", "custom/theme-toggle", "hyprland/workspaces"],
     "modules-center": ["custom/google-center", "custom/clock"],
-    "modules-right": ["custom/bt", "custom/wifi", "custom/mem", "custom/bat"],
-
-    "custom/launcher": {
-        "format": " 󰣇 ",
-        "on-click": "wofi --show drun",
-        "tooltip-format": "Exocore System\nBy: Johnsteve Costanos",
-        "tooltip": true
-    },
-
-    "custom/theme-toggle": {
-        "format": "󱎗",
-        "on-click": "node ~/.config/waybar/scripts/theme.js",
-        "tooltip": false
-    },
-
-    "custom/google-center": {
-        "format": "  ",
-        "on-click": "chromium --new-window https://www.google.com"
-    },
-
-    "custom/clock": { "exec": "node ~/.config/waybar/scripts/status.js clock", "interval": 1 },
-    "custom/wifi": { "exec": "node ~/.config/waybar/scripts/status.js wifi", "interval": 5 },
-    "custom/bt": { "exec": "node ~/.config/waybar/scripts/status.js bt", "interval": 5 },
-    "custom/mem": { "exec": "node ~/.config/waybar/scripts/status.js mem", "interval": 10 },
-    "custom/bat": { "exec": "node ~/.config/waybar/scripts/status.js bat", "interval": 10 }
+    "modules-right": ["custom/bt", "custom/wifi", "custom/mem", "custom/bat"]
 }
