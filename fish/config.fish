@@ -8,7 +8,6 @@ if status is-interactive
     set -l state_file "$HOME/.config/fish/theme_state"
     set -l anime_dir "$HOME/.config/fish/logo/anime"
     set -l exocore_logo "$HOME/.config/fish/logo/exocore/logo.jpg"
-
     # Auto-create state file if missing
     if not test -f $state_file
         echo "exocore" > $state_file
@@ -73,3 +72,5 @@ end
 
 # Remove default greeting
 set -g fish_greeting ""
+# Matrix Shortcut
+alias hacker='kitty --class hacker_matrix -e cmatrix -u 3 -C cyan -b -a'

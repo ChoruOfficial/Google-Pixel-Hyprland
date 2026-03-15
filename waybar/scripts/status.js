@@ -49,4 +49,4 @@ try {
     }
 } catch (e) {
     process.stdout.write("󰣇");
-}
+}1
