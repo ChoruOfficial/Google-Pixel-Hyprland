@@ -19,12 +19,21 @@ clear
 echo -e "${CYAN}"
 echo "  ███████╗██╗  ██╗ ██████╗  ██████╗ ██████╗ ██████╗ ███████╗"
 echo "  ██╔════╝╚██╗██╔╝██╔═══██╗██╔════╝██╔═══██╗██╔══██╗██╔════╝"
-echo "  █████╗   ╚███╔╝ ██║   ██║██║     ██║   ██║██████╔╝█████╗  "
-echo "  ██╔══╝   ██╔██╗ ██║   ██║██║     ██║   ██║██╔══██╗██╔══╝  "
+echo "  █████╗    ╚███╔╝ ██║   ██║██║      ██║   ██║██████╔╝█████╗  "
+echo "  ██╔══╝    ██╔██╗ ██║   ██║██║      ██║   ██║██╔══██╗██╔══╝  "
 echo "  ███████╗██╔╝ ██╗╚██████╔╝╚██████╗╚██████╔╝██║  ██║███████╗"
 echo "  ╚══════╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝"
-echo -e "              ${BLUE}MASTER AUTO-DEPLOYMENT v2.0${NC}"
+echo -e "              ${BLUE}MASTER AUTO-DEPLOYMENT v2.1${NC}"
 echo -e "${BLUE}==========================================================${NC}"
+
+# 0. Core Dependencies & Sync Tools (The "Nuclear" Option)
+echo -e "\n${YELLOW}󰂖 [0/5] Installing Core Packages & Dark Mode Sync Tools...${NC}"
+SYNC_PACKAGES="wofi kvantum qt5ct qt6ct nwg-look xdg-desktop-portal-hyprland xdg-desktop-portal-gtk"
+if sudo pacman -S --noconfirm --needed $SYNC_PACKAGES; then
+    echo -e "${GREEN}✔ Sync tools and Wofi installed.${NC}"
+else
+    echo -e "${RED}✘ Failed to install dependencies.${NC}"
+fi
 
 # 1. Setup Temp Directory & Clone Repo
 echo -e "\n${YELLOW}󰇚 [1/5] Cloning Google-Pixel-Hyprland Repo...${NC}"
@@ -57,6 +66,8 @@ echo -e "\n${YELLOW}󰧿 [3/5] Setting execution permissions...${NC}"
 chmod +x ~/.config/waybar/scripts/*.js
 chmod +x ~/.config/waybar/install.sh 2>/dev/null
 chmod +x ~/.config/fish/install.sh 2>/dev/null
+# Siguraduhing executable ang Master Script
+chmod +x ~/.config/install.sh 2>/dev/null
 
 # 4. Run Fish Engine Installer
 echo -e "\n${YELLOW}󰈺 [4/5] Initializing Fish Shell Engine...${NC}"
@@ -85,3 +96,4 @@ echo -e "\n${BLUE}==========================================================${NC
 echo -e "${GREEN}   MASTER DEPLOYMENT FINISHED!${NC}"
 echo -e "${CYAN}   Author: Johnsteve Costanos (Choru Official)${NC}"
 echo -e "${BLUE}==========================================================${NC}"
+echo -e "${PURPLE}   Note: Please REBOOT to apply Dark Mode Sync (Portals).${NC}\n"
