@@ -1,8 +1,13 @@
 {
     "custom/wifi": {
         "exec": "node ~/.config/waybar/scripts/status.js wifi",
-        "interval": 1
+        "interval": 2,
+        "on-click": "nmcli radio wifi on",
+        "on-click-right": "nmcli radio wifi off",
+        "on-click-middle": "hyprctl dispatch exec \"[float; size 600 450] kitty -e nmtui\"",
+        "tooltip-format": "󰤨  WiFi Control Center\n\nLeft Click: Power ON\nRight Click: Power OFF\nMiddle Click: Manage Networks (Win11 Style)"
     },
+
     "custom/bt": {
         "exec": "node ~/.config/waybar/scripts/status.js bt",
         "interval": 1
