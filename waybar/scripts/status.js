@@ -43,10 +43,10 @@ try {
             break;
 
         case "clock":
-            const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+            const time = new Date().toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' });
             process.stdout.write(time);
             break;
     }
 } catch (e) {
     process.stdout.write("󰣇");
-}1
+}
