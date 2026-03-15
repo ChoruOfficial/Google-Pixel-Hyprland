@@ -7,7 +7,7 @@ if status is-interactive
     # 1. Path & State Setup
     set -l state_file "$HOME/.config/fish/theme_state"
     set -l anime_dir "$HOME/.config/fish/logo/anime"
-    set -l exocore_logo "$HOME/.config/fish/logo/exocore/logo.jpg"
+    set -l exocore_logo "$HOME/.config/fish/logo/exocore/logo.png"
 
     # Auto-create state file if missing
     if not test -f $state_file
