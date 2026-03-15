@@ -11,7 +11,7 @@
 
     "custom/launcher": {
         "format": " 󰣇 ",
-        "on-click": "rofi -show drun",
+        "on-click": "wofi --show drun",
         "tooltip-format": "Exocore System\nBy: Johnsteve Costanos",
         "tooltip": true
     },
