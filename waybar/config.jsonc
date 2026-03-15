@@ -1,0 +1,29 @@
+{
+    "layer": "top",
+    "position": "top",
+    "margin": "8 12 0 12",
+    "height": 45,
+    "modules-left": ["custom/launcher", "custom/theme-toggle", "hyprland/workspaces"],
+    "modules-center": ["custom/google-center", "custom/clock"],
+    "modules-right": ["custom/bt", "custom/wifi", "custom/cpu", "custom/mem", "custom/bat"],
+
+    "custom/launcher": {
+        "format": " 󰣇 ",
+        "on-click": "rofi -show drun",
+        "tooltip-format": "Exocore System\nBy: Johnsteve Costanos",
+        "tooltip": true
+    },
+    "custom/theme-toggle": {
+        "format": "󱎗",
+        "on-click": "node ~/.config/waybar/scripts/theme.js",
+        "tooltip": false
+    },
+    "custom/google-center": { "format": "  ", "on-click": "chromium --new-window https://www.google.com" },
+
+    "custom/clock": { "exec": "node ~/.config/waybar/scripts/status.js clock", "interval": 1 },
+    "custom/wifi": { "exec": "node ~/.config/waybar/scripts/status.js wifi", "interval": 1 },
+    "custom/cpu": { "exec": "node ~/.config/waybar/scripts/status.js cpu", "interval": 1 },
+    "custom/bt": { "exec": "node ~/.config/waybar/scripts/status.js bt", "interval": 1 },
+    "custom/mem": { "exec": "node ~/.config/waybar/scripts/status.js mem", "interval": 1 },
+    "custom/bat": { "exec": "node ~/.config/waybar/scripts/status.js bat", "interval": 1 }
+}
