@@ -1,12 +1,10 @@
 #!/bin/bash
 
-
 # * ---------------------------------------------------------
 # * PROJECT:  EXOCORE SYSTEM MASTER DEPLOYMENT
 # * AUTHOR:   Choru Official (Johnsteve Costanos)
-# * VERSION:  2.2.0 (Auto-Yay Integrated)
+# * VERSION:  2.3.0 (Auto-Yay + Extra Tools Integrated)
 # * ---------------------------------------------------------
-
 
 # Color variables
 G1='\033[38;5;39m'  # Light Blue
@@ -44,7 +42,7 @@ echo -e "${G3}  █████╗    ╚███╔╝ ██║   ██║�
 echo -e "${G4}  ██╔══╝    ██╔██╗ ██║   ██║██║      ██║   ██║██╔══██╗██╔══╝  "
 echo -e "${G5}  ███████╗ ██╔╝ ██╗╚██████╔╝╚██████╗╚██████╔╝ ██║  ██║███████╗"
 echo -e "${G5}  ╚══════╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝"
-echo -e "           ${PURPLE}MASTER AUTO-DEPLOYMENT v2.2.0${NC}"
+echo -e "           ${PURPLE}MASTER AUTO-DEPLOYMENT v2.3.0${NC}"
 echo -e "${BLUE}==========================================================${NC}"
 echo -e "${NC}  AUTHOR: ${GREEN}Johnsteve Costanos (Choru Official)${NC}"
 echo -e "${BLUE}==========================================================${NC}"
@@ -74,13 +72,13 @@ fi
 # --- START DEPLOYMENT ---
 
 # 0. Core Dependencies
-echo -e "\n${YELLOW}󰂖 [0/5] Installing Core Sync Tools (Yay)...${NC}"
+echo -e "\n${YELLOW}󰂖 [0/6] Installing Core Sync Tools (Yay)...${NC}"
 SYNC_PACKS="wofi kvantum qt5ct qt6ct nwg-look xdg-desktop-portal-hyprland xdg-desktop-portal-gtk waybar swww nodejs bluez bluez-utils blueman"
 (yay -S --noconfirm --needed $SYNC_PACKS) & spinner
 echo -e "${GREEN}✔ Core packages ready.${NC}"
 
 # 1. Clone Repository
-echo -e "\n${YELLOW}󰇚 [1/5] Pulling Exocore Master Repository...${NC}"
+echo -e "\n${YELLOW}󰇚 [1/6] Pulling Exocore Master Repository...${NC}"
 REPO_URL="https://github.com/ChoruOfficial/Google-Pixel-Hyprland"
 TEMP_DIR="/tmp/google-pixel-hyprland"
 rm -rf $TEMP_DIR
@@ -88,7 +86,7 @@ rm -rf $TEMP_DIR
 echo -e "${GREEN}✔ Repository cloned to temp.${NC}"
 
 # 2. Deploy Configs
-echo -e "\n${YELLOW}󰆐 [2/5] Distributing modular configurations...${NC}"
+echo -e "\n${YELLOW}󰆐 [2/6] Distributing modular configurations...${NC}"
 (
     mkdir -p ~/.config
     cp -rf $TEMP_DIR/fish ~/.config/
@@ -99,7 +97,7 @@ echo -e "\n${YELLOW}󰆐 [2/5] Distributing modular configurations...${NC}"
 echo -e "${GREEN}✔ Configs deployed to ~/.config/.${NC}"
 
 # 3. Permissions & Execution
-echo -e "\n${YELLOW}󰧿 [3/5] Setting system-wide permissions...${NC}"
+echo -e "\n${YELLOW}󰧿 [3/6] Setting system-wide permissions...${NC}"
 (
     chmod +x ~/.config/waybar/scripts/*.js
     chmod +x ~/.config/waybar/install.sh
@@ -109,7 +107,7 @@ echo -e "\n${YELLOW}󰧿 [3/5] Setting system-wide permissions...${NC}"
 echo -e "${GREEN}✔ Executables configured.${NC}"
 
 # 4. Initialize Engines
-echo -e "\n${YELLOW}󰈺 [4/5] Starting Shell & Waybar Engines...${NC}"
+echo -e "\n${YELLOW}󰈺 [4/6] Starting Shell & Waybar Engines...${NC}"
 sudo systemctl enable --now bluetooth
 
 # Execute Fish Installer if exists
@@ -123,11 +121,38 @@ if [ -f "$HOME/.config/waybar/install.sh" ]; then
 fi
 echo -e "${GREEN}✔ Sub-systems initialized.${NC}"
 
-# 5. Cleanup
-echo -e "\n${YELLOW}󱐋 [5/5] Finalizing deployment...${NC}"
+# 5. Additional Tools Installation
+echo -e "\n${YELLOW}󰇚 [5/6] Installing additional tools (CMatrix, Cava, Peaclock, htop)...${NC}"
+EXTRA_PACKS="cmatrix cava peaclock htop"
+(yay -S --noconfirm --needed $EXTRA_PACKS) & spinner
+echo -e "${GREEN}✔ Additional tools installed.${NC}"
+
+# Deploy configs for cmatrix & cava if present
+if [ -d "$TEMP_DIR/cmatrix" ]; then
+    cp -rf $TEMP_DIR/cmatrix ~/.config/
+    echo -e "${GREEN}✔ CMatrix config deployed.${NC}"
+fi
+
+if [ -d "$TEMP_DIR/cava" ]; then
+    cp -rf $TEMP_DIR/cava ~/.config/
+    echo -e "${GREEN}✔ Cava config deployed.${NC}"
+fi
+
+# Run installer scripts if exist
+if [ -f "$HOME/.config/cmatrix/install.sh" ]; then
+    bash "$HOME/.config/cmatrix/install.sh"
+fi
+
+if [ -f "$HOME/.config/cava/install.sh" ]; then
+    bash "$HOME/.config/cava/install.sh"
+fi
+
+# 6. Cleanup
+echo -e "\n${YELLOW}󱐋 [6/6] Finalizing deployment...${NC}"
 rm -rf $TEMP_DIR
 echo -e "${GREEN}✔ Temporary files cleared.${NC}"
 
+# Final message
 echo -e "\n${BLUE}==========================================================${NC}"
 echo -e "${GREEN}   MASTER DEPLOYMENT FINISHED!${NC}"
 echo -e "${G3}   Everything is set up. Check your Waybar and Shell.${NC}"
