@@ -1,5 +1,5 @@
 #!/bin/bash
-
+sudo -v
 # * ---------------------------------------------------------
 # * PROJECT:  EXOCORE SYSTEM MASTER DEPLOYMENT
 # * AUTHOR:   Choru Official (Johnsteve Costanos)

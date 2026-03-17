@@ -22,17 +22,25 @@ NC='\033[0m'
 
 # Spinner function for aesthetic loading
 spinner() {
-    local pid=$!
+    local pid=$1
     local delay=0.1
     local spinstr='|/-\'
-    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
+    while kill -0 "$pid" 2>/dev/null; do
         local temp=${spinstr#?}
         printf " [%c]  " "$spinstr"
-        local spinstr=$temp${spinstr%"$temp"}
+        spinstr=$temp${spinstr%"$temp"}
         sleep $delay
         printf "\b\b\b\b\b\b"
     done
     printf "    \b\b\b\b"
+}
+
+# Run a command with spinner
+run_with_spinner() {
+    "$@" &
+    local pid=$!
+    spinner $pid
+    wait $pid
 }
 
 clear
@@ -50,38 +58,40 @@ echo -e "${BLUE}==========================================================${NC}"
 
 # 1. Directory Structure
 echo -e "\n${YELLOW}󰉖 [1/5] Initializing Exocore structure...${NC}"
-(mkdir -p ~/.config/waybar/{modules,themes,scripts,assets/backgrounds}) & spinner
+run_with_spinner mkdir -p ~/.config/waybar/{modules,themes,scripts,assets/backgrounds}
 echo -e "${GREEN}✔ File system ready.${NC}"
 
 # 2. Dependencies via YAY
 echo -e "\n${YELLOW}󰂖 [2/5] Installing core dependencies (yay)...${NC}"
-(yay -S --noconfirm --needed waybar swww git nodejs rofi bluez bluez-utils blueman) & spinner
+run_with_spinner yay -S --noconfirm --needed waybar swww git nodejs rofi bluez bluez-utils blueman
 echo -e "${GREEN}✔ Dependencies installed.${NC}"
 
 # 3. Bluetooth Service
 echo -e "\n${YELLOW}󰂱 [3/5] Activating Bluetooth engine...${NC}"
-(sudo systemctl enable --now bluetooth) & spinner
+run_with_spinner sudo systemctl enable --now bluetooth
 echo -e "${GREEN}✔ Bluetooth service online.${NC}"
 
 # 4. Asset Synchronization
 echo -e "\n${YELLOW}󰋩 [4/5] Synchronizing cloud assets (Wallpapers)...${NC}"
 REPO="https://github.com/ChoruOfficial/Pixel-Google-Image.git"
-if [ ! -d "$HOME/.config/waybar/assets/backgrounds/.git" ]; then
-    (git clone $REPO ~/.config/waybar/assets/backgrounds) & spinner
+ASSET_DIR="$HOME/.config/waybar/assets/backgrounds"
+
+if [ ! -d "$ASSET_DIR/.git" ]; then
+    run_with_spinner git clone "$REPO" "$ASSET_DIR"
 else
-    (cd ~/.config/waybar/assets/backgrounds && git pull) & spinner
+    run_with_spinner bash -c "cd '$ASSET_DIR' && git pull"
 fi
 echo -e "${GREEN}✔ Assets synchronized to local storage.${NC}"
 
 # 5. Configuration Injection
 echo -e "\n${YELLOW}󱧿 [5/5] Injecting Exocore modules...${NC}"
-(
-    cp ./config.jsonc ~/.config/waybar/
-    cp ./modules/*.json ~/.config/waybar/modules/
-    cp ./themes/*.css ~/.config/waybar/themes/
-    cp ./scripts/*.js ~/.config/waybar/scripts/
+run_with_spinner bash -c "
+    cp ./config.jsonc ~/.config/waybar/ &&
+    cp ./modules/*.json ~/.config/waybar/modules/ &&
+    cp ./themes/*.css ~/.config/waybar/themes/ &&
+    cp ./scripts/*.js ~/.config/waybar/scripts/ &&
     chmod +x ~/.config/waybar/scripts/*.js
-) & spinner
+"
 echo -e "${GREEN}✔ Configuration deployed successfully.${NC}"
 
 # Initialization
