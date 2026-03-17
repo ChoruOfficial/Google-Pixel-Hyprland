@@ -265,3 +265,4 @@ EOF
 
 echo "✅ Clean reinstall and Hyprland config restored."
 echo "⚠️ Restart Hyprland or reboot to apply changes."
+reboot
