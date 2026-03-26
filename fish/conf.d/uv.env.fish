@@ -1,2 +1,2 @@
-
-source "$HOME/.local/bin/env.fish"
+# USELESS LANG TO
+# source "$HOME/.local/bin/env.fish"
