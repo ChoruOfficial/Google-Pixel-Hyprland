@@ -147,6 +147,14 @@ if [ -f "$HOME/.config/cava/install.sh" ]; then
     bash "$HOME/.config/cava/install.sh"
 fi
 
+# Check and Install Fish Shell
+if ! command -v fish &> /dev/null; then
+    echo -e "${YELLOW}🐟 Fish shell not found. Installing via pacman...${NC}"
+    sudo pacman -S --noconfirm fish & spinner
+else
+    echo -e "${GREEN}✔ Fish shell is already installed.${NC}"
+fi
+
 # 6. Cleanup
 echo -e "\n${YELLOW}󱐋 [6/6] Finalizing deployment...${NC}"
 rm -rf $TEMP_DIR
